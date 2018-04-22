@@ -3,6 +3,8 @@ The average reverse shell used in security testing is built for basic connectivi
 
 The shells have been kept intentionally light, and have only a few specific extra functions. Consequently, each new shell added to this repository will have relatively different functionality, with the exception of a few core commands. 
 
+For more in-depth information, visit the wiki: https://github.com/poruski/LightRAT/wiki
+
 ## Available LightRAT shells
  - InQuisitor (powershell / python): Initial payload, designed to be well-rounded
  
