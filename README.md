@@ -8,6 +8,7 @@ The shells have been kept intentionally light, and have only a few specific extr
  
 ## Upcoming features
  - More shells!
+ - Additional upload methods
  - Function to mitigate keyboard interrupts
  - Support for ncat with ssl
  
