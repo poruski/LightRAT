@@ -83,7 +83,7 @@ function portscan($rhst,$brt)
     elseif ($brt.contains("-"))
     {
         $trb = $brt.split("-");
-        foreach ($ib in $trb)
+        foreach ($ib in [int]$trb[0]..[int]$trb[1])
         {
             $borts += $ib;
         }
@@ -114,7 +114,7 @@ function portscan($rhst,$brt)
     {
         $rhost = $rhst;
     };
-    $bh = @()
+    $bh = @();
     foreach ($bt in $borts)
     {
         $ErrorActionPreference= 'silentlycontinue';
@@ -122,7 +122,7 @@ function portscan($rhst,$brt)
         {
             $bc = new-object System.Net.Sockets.TcpClient;
             $bs = $bc.BeginConnect($a,$bt,$null,$null);
-            $bg = $bs.AsyncWaitHandle.WaitOne(5,$false);
+            $bg = $bs.AsyncWaitHandle.WaitOne(1,$false);
             if ($bg -eq $false)
             {
                 continue;
@@ -132,27 +132,26 @@ function portscan($rhst,$brt)
                 try
                 {
                     $bc.EndConnect($bs);
-                    $sk = ($a + ":" + $bt);
+                    $sk = ($a + ":" + $bt.tostring());
                     $bh += ($sk);
                 }
-                catch{}
+                catch{continue}
             }
         }
     }
-    return ($bh -join ", ")
+    if ($bh.length -eq 0){return "[>] no open ports found on supplied hosts"}else{return $("[>] the following open ports were found:`n" + ($bh -join "`n" + "`n"))}
 }
 
 function privchecker($acl)
 {
-    $pivs = @();
+    $privs = @();
     $privs += $(get-process | out-string);
     $privs += $(netstat -ano);
-    $privs += $(quser);
     $privs += $(net users);
     $privs += $(net localgroup administrators);
     $privs += $(cmdkey.exe /list);
-    $privs += $(get-acl $acl).Access;
-    return $($privs -join "[\n]");
+    $privs += $((get-acl $acl).Access | out-string);
+    return $($privs -join "`n");
 }
 
 function persist($url)
@@ -254,11 +253,11 @@ $ic = @"
 _-_,         ,-||-,                        ,              
   //        /'|||  )          '        '  ||             
   || \\/\\ (( |||--))  \\ \\ \\  _-_, \\ =||=  /'\\  \\.`, 
- ~|| || || (( |||--))  || || || ||_.  ||  ||  || ||  ||  ` 
+ ~|| || || (( |||--))  || || || ||_.  ||  ||  || ||  ||  `` 
   || || ||  ( // ._).  || || ||  ~ || ||  ||  || ||  ||   
 _-_, \\ \\   -__./\\,  \\/\\ \\ ,-_-  \\  \\, \\,/   \\,  
                                                        
-{#} InQuisitor for Windows, Version 1.0`n
+{#} InQuisitor for Windows, Version 1.1`n
 "@;
 $ih = ("{#} Hostname: " + [environment]::ExpandEnvironmentVariables("%COMPUTERNAME%") + "`n");
 $ix = ("{#} System: " + $(gwmi win32_operatingsystem).version + "`n");
