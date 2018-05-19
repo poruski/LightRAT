@@ -6,7 +6,9 @@ The shells have been kept intentionally light, and have only a few specific extr
 For more in-depth information, visit the wiki: https://github.com/poruski/LightRAT/wiki
 
 ## Available LightRAT shells
- - InQuisitor (powershell / python): Initial payload, designed to be well-rounded
+ - InQuisitor (powershell): Initial payload, designed to be well-rounded
+ - Aggress0r (powershell): Lateral movement payload, with brute forcing for smb and psremoting
+ - Ascendant (powershell): Privilege escalation payload, with expanded privchecker and password prompt
  
 ## Upcoming features
  - More shells!
